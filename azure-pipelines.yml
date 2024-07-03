@@ -17,7 +17,7 @@ jobs:
       echo "[INFO] Installation successful..."
       cd packages
       echo "[INFO] Zipping Martini package..."
-      zip -qr ../infante_azure.zip infante_azure/
+      zip -qr ../infante_azure.zip package-1/
       echo "[INFO] Zipping successful..."
     displayName: 'Zip'
 # This publishes the zip file martini package as an artifact
