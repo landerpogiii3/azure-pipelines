@@ -1,5 +1,5 @@
 trigger:
-- master
+- main
 
 # This specifies the OS that your jobs will run on.
 pool:
