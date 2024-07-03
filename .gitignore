@@ -28,6 +28,7 @@ conf/db-pool/config.dbxml
 conf/db-pool/workflow.dbxml
 conf/db-pool/monitor.dbxml
 conf/db-pool/tracker.dbxml
+.versions
 .version
 *.class
 .project
