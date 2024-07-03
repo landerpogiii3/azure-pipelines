@@ -1,0 +1,4 @@
+<package stateOnStartup="started" id="com.company.new-package" version="1.0.0-SNAPSHOT" context-path="/package-3">
+  <startup-services/>
+  <shutdown-services/>
+</package>
