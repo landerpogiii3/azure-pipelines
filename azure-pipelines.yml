@@ -1,15 +1,14 @@
 trigger:
 - main
 
-# This specifies the OS that your jobs will run on.
 pool:
-  vmImage: ubuntu-latest
+  name: 'Default'
+  demands:
+  - agent.name -equals self-hosted
 
 jobs:
-# The first job will install the zip package and will zip the martini package.
 - job: CreateZip
   displayName: Create zip package
-  
   steps:
   - script: |
       echo "[INFO] Installing zip package..."
@@ -22,12 +21,10 @@ jobs:
     displayName: 'Zip'
   - publish: infante_azure.zip
     artifact: martini
-    
-# The second job will install the jq package and will deploy the local martini package to martini online.
+
 - job: DeployPackage
   displayName: Deploy the package
   dependsOn: CreateZip
-  
   steps:
   - download: current
     artifact: martini
