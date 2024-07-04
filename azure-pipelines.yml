@@ -20,19 +20,16 @@ jobs:
       zip -qr ../infante_azure.zip package-1/
       echo "[INFO] Zipping successful..."
     displayName: 'Zip'
-# This publishes the zip file martini package as an artifact
   - publish: infante_azure.zip
-# This line specifies the artifact name
     artifact: martini
     
 # The second job will install the jq package and will deploy the local martini package to martini online.
 - job: DeployPackage
   displayName: Deploy the package
+  dependsOn: CreateZip
   
   steps:
-# This downloads the artifact which is the zip file martini package
   - download: current
-# This line specifies the artifact name
     artifact: martini
   - script: |
       echo "[INFO] Installing jq package..."
@@ -45,7 +42,3 @@ jobs:
       curl -X POST -H "Authorization:Bearer $token" "$(MARTINI_ONLINE_URL)/esbapi/packages/upload?stateOnCreate=STARTED&replaceExisting=true" -H "accept:application/json" -H "Content-Type:multipart/form-data" -F "file=@"$(Pipeline.Workspace)"/martini/infante_azure.zip;type=application/x-zip-compressed"
       echo "[INFO] Upload successful..."
     displayName: 'Deploy'
-# This line tells the agent that it will need to do the first job successfully to run the second job. 
-  dependsOn: CreateZip
-  
-# In the "file=@"$(Pipeline.Workspace)"/martini/infante_azure.zip; the variable $(Pipeline.Workspace) is where the downloaded artifacts are located and the 'martini' is the artifact name which containes our zip file
