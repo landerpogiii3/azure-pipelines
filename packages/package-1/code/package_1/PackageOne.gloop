@@ -20,7 +20,7 @@
                     "lines": [
                         {
                             "type": "set",
-                            "expression": "This is package 1",
+                            "expression": "This-is package 1",
                             "to": [
                                 "_package"
                             ]
