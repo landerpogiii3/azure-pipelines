@@ -1,41 +1,19 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
 trigger:
-- main
+- master
 
 pool:
-  name: 'Default'
-  demands:
-  - agent.name -equals allendimacalis-iMac
+  vmImage: ubuntu-latest
 
-jobs:
-- job: CreateZip
-  displayName: Create zip package
-  steps:
-  - script: |
-      echo "[INFO] Installing zip package..."
-      sudo apt update -y && sudo apt install -y zip
-      echo "[INFO] Installation successful..."
-      cd packages
-      echo "[INFO] Zipping Martini package..."
-      zip -qr ../infante_azure.zip package-1/
-      echo "[INFO] Zipping successful..."
-    displayName: 'Zip'
-  - publish: infante_azure.zip
-    artifact: martini
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
 
-- job: DeployPackage
-  displayName: Deploy the package
-  dependsOn: CreateZip
-  steps:
-  - download: current
-    artifact: martini
-  - script: |
-      echo "[INFO] Installing jq package..."
-      sudo apt update -y && sudo apt install -y jq
-      echo "[INFO] Installation successful..."
-      echo "[INFO] Retrieving access token..."
-      token=$(curl -X POST $(MARTINI_ONLINE_URL)/oauth/token -H 'Accept:application/json' -H 'Content-Type:application/x-www-form-urlencoded' -d "grant_type=password&username=$(TORO_EMAIL)&password=$(TORO_PASSWORD)&client_id=TOROMartini&client_secret=TOROMartini" | jq -r .access_token)
-      echo "[INFO] Access token retrieval successful..."
-      echo "[INFO] Deploying Martini package to Martini Online..."
-      curl -X POST -H "Authorization:Bearer $token" "$(MARTINI_ONLINE_URL)/esbapi/packages/upload?stateOnCreate=STARTED&replaceExisting=true" -H "accept:application/json" -H "Content-Type:multipart/form-data" -F "file=@"$(Pipeline.Workspace)"/martini/infante_azure.zip;type=application/x-zip-compressed"
-      echo "[INFO] Upload successful..."
-    displayName: 'Deploy'
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
